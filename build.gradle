@@ -18,9 +18,12 @@ repositories {
 
 // 의존성 설정
 dependencies {
-  compile "org.springframework:spring-webmvc:$springVersion"
-  compile 'cglib:cglib-nodep:2.2.2'
-  compile 'ch.qos.logback:logback-classic:1.0.6'
+	//Spring
+	compile "org.springframework:spring-context:$springVersion"
+	compile "org.springframework:spring-webmvc:$springVersion"
+	
+	compile 'cglib:cglib-nodep:2.2.2'
+	compile 'ch.qos.logback:logback-classic:1.0.6'
   
   	//Jackson JSON Processor
   	compile 'org.codehaus.jackson:jackson-mapper-asl:1.8.1'
@@ -46,10 +49,10 @@ dependencies {
 			'commons-io:commons-io:2.0.1'
 
 	//Servlet
-    providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.30'
-    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
-    providedCompile 'javax.servlet.jsp.jstl:jstl-api:1.2'
-    providedCompile 'org.glassfish.web:jstl-impl:1.2'
+   	//providedCompile 'org.apache.tomcat:tomcat-servlet-api:7.0.30'
+    //providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+    //providedCompile 'javax.servlet.jsp.jstl:jstl-api:1.2'
+    //providedCompile 'org.glassfish.web:jstl-impl:1.2'
 
     testCompile "org.springframework:spring-test:$springVersion",
                 'junit:junit:4.+',
@@ -62,25 +65,3 @@ dependencies {
 
 // JAVA 컴파일시 인코딩 설정
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-// TEST 설정
-test {
-    jvmArgs = ['-ea', '-Xmx256m']
-    logging.captureStandardOutput(LogLevel.INFO)
-    testReport = false
-}
-
-// 프로젝트 초기화
-// 1. java source directory 생성 : src/main/java, src/test/java
-// 2. resource directory 생성    : src/main/resource, src/test/resource
-// 3. web source directory 생성  : src/main/webapp, src/main/webapp/WEB-INF
-task initProject(description: 'initialize project') << {
-    createDir = {
-        println "create source directory: $it"
-        it.mkdirs()
-    }
-    sourceSets*.java.srcDirs*.each createDir
-    sourceSets*.resources.srcDirs*.each createDir
-    createDir webAppDir
-    createDir new File(webAppDir, '/WEB-INF')
-}
